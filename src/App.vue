@@ -104,7 +104,7 @@
           <span class="material-symbols-outlined"> database </span>
           <span class="ml-2 text-sm font-medium">Stock</span>
         </router-link>
-        <a
+        <router-link
           class="
             flex
             items-center
@@ -115,12 +115,12 @@
             hover:bg-gray-700 hover:text-gray-300
             rounded
           "
-          href="#"
+          :to="{ name: 'Supplier' }"
         >
           <span class="material-symbols-outlined"> diversity_3 </span>
           <span class="ml-2 text-sm font-medium">Suppliers</span>
-        </a>
-        <a
+        </router-link>
+        <router-link
           class="
             flex
             items-center
@@ -131,11 +131,11 @@
             rounded
             hover:bg-gray-700 hover:text-gray-300
           "
-          href="#"
+          :to="{ name: 'Dolls' }"
         >
           <span class="material-symbols-outlined"> cruelty_free </span>
           <span class="ml-2 text-sm font-medium">Dolls Details</span>
-        </a>
+        </router-link>
       </div>
       <div
         class="flex flex-col items-center w-full mt-2 border-t border-gray-700"

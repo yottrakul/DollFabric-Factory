@@ -5,6 +5,8 @@ import Create from '../views/Create.vue'
 import Invoice from '../views/Invoice.vue'
 import Dashboard from '../views/Dashboard.vue'
 import TestAdd from '../views/TestSendRef.vue'
+import Supplier from '../views/Supplier.vue'
+import Dolls from '../views/Doll.vue'
 
 const routes = [
   {
@@ -36,6 +38,16 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: TestAdd
+  },
+  {
+    path: '/supplier',
+    name: 'Supplier',
+    component: Supplier
+  },
+  {
+    path: '/dolls',
+    name: 'Dolls',
+    component: Dolls
   }
 
 ]

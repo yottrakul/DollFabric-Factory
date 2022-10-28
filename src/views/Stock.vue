@@ -6,7 +6,14 @@
       buttons-pagination
       :headers="headers"
       :items="stocks"
+      :loading="stocks.length === 0"
     >
+      <template #loading>
+        <img
+          src="../assets/bongocat-funny.gif"
+          style="width: 80px; height: 50px"
+        />
+      </template>
       <template #item-imageFabric="{ imageFabric }">
         <div class="fabric_wrapper">
           <img @click="showImage(imageFabric)" class="fabric" :src="imageFabric" alt="" />
@@ -30,23 +37,19 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import Spinner from "../components/Spinner.vue";
 import Overlay from '../components/Overlay.vue'
 import getStock from '../composibles/getStock'
-import { projectFirestore } from '@/firebase/config';
 import FactoryName from '../components/FkRef.vue'
 
 export default {
   components: {
-    Spinner, Overlay, FactoryName
+   Overlay, FactoryName
   },
   setup() {
 
-    // const exPath = ref("Factory/8LdXbOBwCBWjJlOKP7Fk");
-    // const items = ref([])
-
-    // เก็บค่า Src ของ Img 
+    // เก็บค่า Src ของ Img และ Overlay
     const imgSrc = ref("");
+    const showOverlay = ref(false);
 
     // เรียกใช้ getStock
     const { stocks, error, loadStock} = getStock();
@@ -54,7 +57,6 @@ export default {
     
 
 
-    const showOverlay = ref(false);
     const headers = ref([
       { text: "รูปภาพ", value: "imageFabric" },
       { text: "ID_Fabric", value: "id" },

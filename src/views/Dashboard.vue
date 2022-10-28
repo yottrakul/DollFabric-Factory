@@ -28,7 +28,9 @@
           <span class="material-symbols-outlined text-7xl group-icon"> group </span>
         </div>
         <p class="detail">Manage supplier, view supplier across workspace</p>
-        <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
+        <router-link :to="{ name: 'Supplier' }">
+          <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
+        </router-link>
       </div>
       <div class="menu-box btn btn-4">
         <div class="box-head flex items-end justify-between m-9">
@@ -44,7 +46,10 @@
           <span class="material-symbols-outlined text-7xl android-icon"> android </span>
         </div>
         <p class="detail">See what’s happening At your company!</p>
+        <router-link :to="{ name: 'Dolls' }" >
         <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
+
+        </router-link>
       </div>
       <div class="menu-box btn btn-6">
         <div class="box-head flex items-end justify-between m-9">
