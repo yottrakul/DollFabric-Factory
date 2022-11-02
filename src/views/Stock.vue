@@ -4,10 +4,12 @@
     v-if="showOverlay"
     @close="showOverlay = !showOverlay"
   />
+  <AddStock v-if="isAdd" @close="isAdd = !isAdd"/>
   <div class="main">
     <div v-if="error" class="error">{{ error }}</div>
     <div class="text-end">
       <button
+      @click="isAdd = !isAdd"
       type="button"
       class="
         text-white
@@ -72,13 +74,18 @@ import { ref } from "@vue/reactivity";
 import Overlay from "../components/Overlay.vue";
 import getStock from "../composibles/getStock";
 import FactoryName from "../components/FkRef.vue";
+import AddStock from "../components/AddStock.vue"
 
 export default {
   components: {
     Overlay,
     FactoryName,
+    AddStock
   },
   setup() {
+    // Add Mode
+    const isAdd = ref(false);
+
     // เก็บค่า Src ของ Img และ Overlay
     const imgSrc = ref("");
     const showOverlay = ref(false);
@@ -122,6 +129,7 @@ export default {
       imgSrc,
       error,
       showImage,
+      isAdd,
     };
   },
 };

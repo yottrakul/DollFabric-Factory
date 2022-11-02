@@ -7,8 +7,6 @@
       />
       <span @click="closeOverlay" class="material-symbols-outlined"> close </span>
     </div>
-    
-    
   </div>
 </template>
 
