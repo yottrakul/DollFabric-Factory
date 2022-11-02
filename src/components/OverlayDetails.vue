@@ -1,34 +1,35 @@
 <template>
-  <div class="overlay">
+  <div @click.self="closeOverlay" class="overlay">
     <div class="container">
-      <!-- Easy Table -->
-      <EasyDataTable
-        buttons-pagination
-        :headers="headers"
-        :items="fabrics"
-        :loading="fabrics.length === 0"
-      >
-        <template #loading>
-          <img
-            src="../assets/bongocat-funny.gif"
-            style="width: 80px; height: 50px"
-          />
-        </template>
-        <template #item-imageFabric="{ imageFabric }">
-          <div class="fabric_wrapper">
+      <p v-if="error">{{ error }}</p>
+      <div class="table">
+        <h1 class="text-3xl">
+        <NameDollRef :collectionName="'Doll'" :docId="idDoll" :isImg="false" :objKey="'name'"/>
+        <span v-if="fabricInDoll.length !== 0" class="text-lg"> ({{idDoll}})</span>
+      </h1>
+        <EasyDataTable
+          buttons-pagination
+          :headers="headers"
+          :items="fabricInDoll"
+          :loading="fabricInDoll.length === 0"
+        >
+          <template #loading>
             <img
-              @click="showImage(imageFabric)"
-              class="fabric"
-              :src="imageFabric"
-              alt=""
+              src="../assets/bongocat-funny.gif"
+              style="width: 80px; height: 50px"
             />
-          </div>
-        </template>
-        <!-- <template #item-factory="{ factory }">
-          <FactoryName :path="factory" :objKey="'Name'" />
-        </template> -->
-      </EasyDataTable>
-      <span @click="closeOverlay" class="material-symbols-outlined">
+          </template>
+          <template #item-imageFabric="{ imageFabric }">
+            <div class="fabric_wrapper">
+              <img class="fabric" :src="imageFabric" alt="" />
+            </div>
+          </template>
+          <template #item-factory="{ factory }">
+            <FactoryName :path="factory" :objKey="'Name'" />
+          </template>
+        </EasyDataTable>
+      </div>
+      <span @click="closeOverlay" class="material-symbols-outlined close">
         close
       </span>
     </div>
@@ -36,19 +37,23 @@
 </template>
 
 <script>
-import getDollDetails from '../composibles/getDollDetails'
-import FabricImgRef from '../components/FkRef.vue'
-import FabricNameRef from '../components/FkRef.vue'
-import { ref } from '@vue/reactivity';
+import getDollDetails from "../composibles/getDollDetails";
+import { ref } from "@vue/reactivity";
+import { computed } from "@vue/runtime-core";
+import FactoryName from "../components/FkRef.vue";
+import NameDollRef from "../components/FkCollRef.vue"
 export default {
+  props: ["idDoll", "stocks"],
   components: {
-    FabricImgRef, FabricNameRef
+    FactoryName, NameDollRef
   },
-  setup() {
+  setup(props, context) {
+    // // New Stocks
+    // const newStock = props.stocks;
 
     //ประกาศและเรียกใช้ getDollsDetails
     const { dollDetails, error, loadDetails } = getDollDetails();
-    loadDetails();
+    loadDetails(props.idDoll);
 
     // เก็บค่า Src ของ Img และ Overlay boolean
     const imgSrc = ref("");
@@ -62,15 +67,53 @@ export default {
 
     // Header ตาราง & Item ในตาราง
     const headers = ref([
-      { text: "รูปภาพ", value: "imgDoll" },
-      { text: "ID_Doll", value: "id" },
-      { text: "ชื่อตุ๊กตา", value: "name" },
-      { text: "รายละเอียด", value: "operation" },
+      { text: "รูปภาพ", value: "imageFabric" },
+      { text: "ID_Fabric", value: "id" },
+      { text: "สีผ้า", value: "color" },
+      { text: "ลักษณะผ้า", value: "type" },
+      { text: "ผ้าในสต็อก (Y)", value: "length", sortable: true },
+      { text: "โรงงาน", value: "factory" },
+      { text: "จำนวนผ้าที่ใช้ (Y)", value: "Quantity" },
     ]);
 
+    // CloseOverlay
+    const closeOverlay = () => {
+      context.emit("close");
+    };
 
-    return { dollDetails, error, imgSrc, showOverlay, showImage, headers}
-  }
+    // Computed Method
+    // กรอง id Fabric ที่อยู่ในตุ๊กตาให้ตรงกับค่าที่อยู่ใน Stock
+    const fabricInDoll = computed(() => {
+      let result = [];
+      dollDetails.value.forEach((doll) => {
+        result.push(
+          ...props.stocks.filter((stock) => {
+            return stock.id === doll.Fabric;
+          })
+        );
+
+        result.forEach((fabric) => {
+          dollDetails.value.forEach((doll) => {
+            if (doll.Fabric === fabric.id) {
+              fabric.Quantity = doll.Quantity;
+            }
+          });
+        });
+      });
+      return result;
+    });
+
+    return {
+      dollDetails,
+      error,
+      imgSrc,
+      showOverlay,
+      showImage,
+      headers,
+      closeOverlay,
+      fabricInDoll,
+    };
+  },
 };
 </script>
 
@@ -88,25 +131,49 @@ export default {
 
 .container {
   position: relative;
-  margin: 5rem auto;
+  margin: 3rem auto;
   width: 100%;
-  height: 80%;
+  overflow: auto;
   border-radius: 10px;
-  overflow: hidden;
   background-color: #fff;
 }
 
-span {
+.close {
   cursor: pointer;
   position: absolute;
   top: 1rem;
   right: 1rem;
   font-size: 2.5rem;
   color: #2b2b2b;
+  z-index: 10;
 }
 
-span:hover {
+.close:hover {
   color: #ff0000;
+  transition: 0.25s;
+}
+
+.table {
+  width: 87rem;
+  margin: 1rem auto;
+}
+
+.fabric {
+  margin-right: 10px;
+  display: inline-block;
+  width: 100%;
+  height: 5rem;
+  object-fit: cover;
+  object-position: 0px 70%;
+  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 10%);
+}
+
+/* .fabric {
+  cursor: pointer;
+} */
+
+.fabric:hover {
+  opacity: 0.7;
   transition: 0.25s;
 }
 </style>

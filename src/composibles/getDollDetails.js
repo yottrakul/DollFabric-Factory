@@ -12,8 +12,10 @@ const getDollDetails = () => {
 
       // Map ค่าลงใน dollDetails.value
       dollDetails.value = res.docs.map(doc => {
-        return { ...doc.data(), id: doc.id }
+        return { ...doc.data(), id: doc.id, Fabric: doc.data().Fabric.id  }
       })
+
+      console.log(dollDetails.value)
     } catch (err) {
       console.log(err);
       error.value = err;

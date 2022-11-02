@@ -1,6 +1,6 @@
 <template>
-  <!-- <OverlayDetails/> -->
-  <OverlayImg
+  <OverlayDetails @close="idDoll = null" v-if="idDoll" :idDoll="idDoll" :stocks="stocks"/>
+  <Overlay
     :imgSrc="imgSrc"
     v-if="showOverlay"
     @close="showOverlay = !showOverlay"
@@ -36,7 +36,7 @@
 
   <!-- นี่คือหน้าแสดง Patern ตุ๊กตา -->
   <p v-if="error">{{ error }}</p>
-  <p>{{ dolls }}</p>
+  <!-- <p>{{ dolls }}</p> -->
 </template>
 
 <script>
@@ -44,6 +44,7 @@ import Overlay from "../components/Overlay.vue";
 import getDolls from "../composibles/getDolls";
 import { ref } from "@vue/reactivity";
 import OverlayDetails from "../components/OverlayDetails.vue";
+import getStock from '@/composibles/getStock';
 
 export default {
   components: {
@@ -72,13 +73,18 @@ export default {
       { text: "รายละเอียด", value: "operation" },
     ]);
 
-    // แก้ไข Item
+    // ดูรายละเอียด Item
+    const idDoll = ref(null);
     const showDetails = (doll) => {
-      console.log('showDetails');
-      console.log(doll)
+      idDoll.value = doll.id;
+      console.log(doll.id);
     }
 
-    return { dolls, error, showImage, headers, showDetails, showOverlay, imgSrc };
+    //เรียก Stock ทั้งหมด
+    const {stocks,loadStock} = getStock();
+    loadStock();
+
+    return { dolls, error, showImage, headers, showDetails, showOverlay, imgSrc, idDoll, stocks };
   },
 };
 </script>
