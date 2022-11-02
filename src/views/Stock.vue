@@ -1,7 +1,34 @@
 <template>
-  <Overlay :imgSrc="imgSrc" v-if="showOverlay" @close="showOverlay = !showOverlay"/>
+  <Overlay
+    :imgSrc="imgSrc"
+    v-if="showOverlay"
+    @close="showOverlay = !showOverlay"
+  />
   <div class="main">
-    <div v-if="error" class="error">{{error}}</div>
+    <div v-if="error" class="error">{{ error }}</div>
+    <div class="text-end">
+      <button
+      type="button"
+      class="
+        text-white
+        bg-green-600
+        hover:bg-green-700
+        focus:ring-4 focus:outline-none focus:ring-blue-300
+        font-medium
+        rounded-lg
+        text-sm
+        px-3
+        py-2
+        text-center
+        inline-flex
+        items-center
+        mb-3
+      "
+    >
+      <span class="material-symbols-outlined"> add </span>
+    </button>
+    </div>
+    
     <EasyDataTable
       buttons-pagination
       :headers="headers"
@@ -16,11 +43,16 @@
       </template>
       <template #item-imageFabric="{ imageFabric }">
         <div class="fabric_wrapper">
-          <img @click="showImage(imageFabric)" class="fabric" :src="imageFabric" alt="" />
+          <img
+            @click="showImage(imageFabric)"
+            class="fabric"
+            :src="imageFabric"
+            alt=""
+          />
         </div>
       </template>
       <template #item-factory="{ factory }">
-        <FactoryName :path="factory" :objKey="'Name'"/>
+        <FactoryName :path="factory" :objKey="'Name'" />
       </template>
     </EasyDataTable>
   </div>
@@ -37,25 +69,23 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import Overlay from '../components/Overlay.vue'
-import getStock from '../composibles/getStock'
-import FactoryName from '../components/FkRef.vue'
+import Overlay from "../components/Overlay.vue";
+import getStock from "../composibles/getStock";
+import FactoryName from "../components/FkRef.vue";
 
 export default {
   components: {
-   Overlay, FactoryName
+    Overlay,
+    FactoryName,
   },
   setup() {
-
     // เก็บค่า Src ของ Img และ Overlay
     const imgSrc = ref("");
     const showOverlay = ref(false);
 
     // เรียกใช้ getStock
-    const { stocks, error, loadStock} = getStock();
+    const { stocks, error, loadStock } = getStock();
     loadStock();
-    
-
 
     const headers = ref([
       { text: "รูปภาพ", value: "imageFabric" },
@@ -65,7 +95,6 @@ export default {
       { text: "ความยาวผ้า (Y)", value: "length", sortable: true },
       { text: "โรงงาน", value: "factory" },
     ]);
-
 
     // Add ค่า item
     // items.value = [
@@ -80,14 +109,11 @@ export default {
     //     }
     //   ];
 
-
     // สร้างฟังก์ชัน showImage เพื่อเก็บค่า Src ของ Img
     const showImage = (item) => {
       imgSrc.value = item;
-      showOverlay.value = !showOverlay.value
-    }
-    
-
+      showOverlay.value = !showOverlay.value;
+    };
 
     return {
       headers,
@@ -95,7 +121,7 @@ export default {
       showOverlay,
       imgSrc,
       error,
-      showImage
+      showImage,
     };
   },
 };
@@ -121,7 +147,7 @@ export default {
   cursor: pointer;
 }
 
-.fabric:hover{
+.fabric:hover {
   opacity: 0.7;
   transition: 0.25s;
 }
