@@ -31,6 +31,7 @@
             >อัปโหลดรูปสินค้า</label
           >
           <input
+            accept="image/*"
             @change="onFileSelected"
             class="
               block
@@ -52,7 +53,7 @@
             class="mt-1 text-sm text-gray-500 dark:text-gray-300 mb-5"
             id="fabric_help"
           >
-            กรุณาเพิ่มรูปภาพ เนื้อ/สี ของผ้าเพื่อประโยชน์ในการระบุผ้า
+            กรุณาเพิ่มรูปภาพ เนื้อ/สี ของผ้าเพื่อประโยชน์ในการระบุผ้า ( .jpg .png)
           </div>
 
           <div class="grid md:grid-cols-2 md:gap-6">
@@ -297,6 +298,7 @@
               รอสักครู่
             </button>
             <button
+              @click="seletedFile = null"
               type="reset"
               class="
                 text-white
@@ -348,14 +350,18 @@ export default {
       fr.readAsDataURL(seletedFile.value);
     };
 
-    const storageRef = projectStorage.ref();
-    const imagesRef = storageRef.child("images");
-    const spaceRef = storageRef.child("images/img2.jpg");
-
-    const uploadFile = async () => {
+    // Upload File
+    const uploadFile = async (name) => {
+      const storageRef = projectStorage.ref();
+      const imageRef = storageRef.child(`images/${name}.jpg`);
       try {
-        await spaceRef.putString(fr.result, "data_url");
-        console.log("Uploaded");
+        // upload รูป
+        await imageRef.putString(fr.result, "data_url");
+        // รอลิงค์รูป
+        const url = await storageRef.child(`images/${name}.jpg`).getDownloadURL();
+        // ส่งลิงค์ออกไป url
+        return url;
+        // console.log("Uploaded");
       } catch (error) {
         console.log(error);
       }
@@ -364,7 +370,7 @@ export default {
     // Add Stock method
     const isLoad = ref(false);
     const color = ref("");
-    const lengthFab = ref(0);
+    const lengthFab = ref(null);
     const factory = ref("");
     const typeFab = ref("");
     let fabric = {};
@@ -382,6 +388,20 @@ export default {
         // Up ขึ้น Firebase ใน collection Stock
         const fabId = await projectFirestore.collection("Stock").add(fabric);
         // console.log(fabId.id);
+
+        // upload ไฟล์รูปขึ้น firebase
+          // TODO เช็คว่ามี ไฟล์รูปมั้ย?
+          if (seletedFile.value) {
+            // console.log('Have File');
+            // upload
+            const url = await uploadFile(fabId.id)
+            fabric.imageFabric = url;
+            const imgUrl = {
+              imageFabric: url
+            }
+            await projectFirestore.collection("Stock").doc(fabId.id).update(imgUrl);
+          }
+
         // เพิ่ม Id และเปลี่ยน factory เป็น path เข้าไปใน fabric
         fabric.id = fabId.id;
         fabric.factory = projectFirestore.doc(`Factory/${factory.value}`).path;
@@ -406,6 +426,7 @@ export default {
       typeFab,
       fabric,
       isLoad,
+      seletedFile
     };
   },
 };
