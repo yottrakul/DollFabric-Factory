@@ -2,7 +2,8 @@ import { projectFirestore } from "@/firebase/config"
 
 const projectDelete = async (collection, docId) => {
   try {
-    await projectFirestore.collection(collection).doc(docId).delete()
+    const res = await projectFirestore.collection(collection).doc(docId).delete();
+    return res;
   } catch (error) {
     console.log(error)
   }
@@ -10,7 +11,8 @@ const projectDelete = async (collection, docId) => {
 
 const projectUpdate = async (collection, docId, data) => {
   try {
-    await projectFirestore.collection(collection).doc(docId).update(data)
+    const res = await projectFirestore.collection(collection).doc(docId).update(data)
+    return res;
   } catch (error) {
     console.log(error)
   }
