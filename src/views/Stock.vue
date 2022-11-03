@@ -4,7 +4,7 @@
     v-if="showOverlay"
     @close="showOverlay = !showOverlay"
   />
-  <AddStock v-if="isAdd" @close="isAdd = !isAdd"/>
+  <AddStock v-if="isAdd" @close="isAdd = !isAdd" @finished="handleAddStock"/>
   <div class="main">
     <div v-if="error" class="error">{{ error }}</div>
     <div class="text-end">
@@ -103,24 +103,18 @@ export default {
       { text: "โรงงาน", value: "factory" },
     ]);
 
-    // Add ค่า item
-    // items.value = [
-    //     {
-    //       imageFabric:
-    //         "https://ninefivewearing.com/wp-content/uploads/2020/07/%E0%B8%9C%E0%B9%89%E0%B8%B2%E0%B8%84%E0%B8%AD%E0%B8%95%E0%B8%95%E0%B8%AD%E0%B8%99-%E0%B8%AA%E0%B8%B5%E0%B8%9F%E0%B9%89%E0%B8%B2.jpg",
-    //       id: "BjxE3sC0pUkdZClnOnFK",
-    //       color: "ฟ้า",
-    //       type: "Spandex",
-    //       length: 170,
-    //       factory: "บริษัท สุรศักดิ์ จำกัด",
-    //     }
-    //   ];
-
     // สร้างฟังก์ชัน showImage เพื่อเก็บค่า Src ของ Img
     const showImage = (item) => {
       imgSrc.value = item;
       showOverlay.value = !showOverlay.value;
     };
+
+    // Handle AddStock
+    const handleAddStock = (fabric) => {
+      console.log(fabric)
+      stocks.value.push(fabric);
+      isAdd.value = !isAdd.value;
+    }
 
     return {
       headers,
@@ -130,6 +124,7 @@ export default {
       error,
       showImage,
       isAdd,
+      handleAddStock,
     };
   },
 };

@@ -2,7 +2,7 @@ import { projectFirestore } from "@/firebase/config";
 import { ref } from "vue"
 
 const getFactorys = () => {
-  const factoryAll = ref([]);
+  const factorys = ref([]);
   const error = ref(null);
 
   const loadFactory = async () => {
@@ -10,7 +10,7 @@ const getFactorys = () => {
       error.value = null;
       const res = await projectFirestore.collection('Factory').get();
       
-      factoryAll.value = res.docs.map(doc => {
+      factorys.value = res.docs.map(doc => {
         return { ...doc.data(), id: doc.id }
       })
     } catch (err) {
@@ -19,7 +19,7 @@ const getFactorys = () => {
     }
   }
 
-  return { factoryAll, error, loadFactory}
+  return { factorys, error, loadFactory}
 
 }
 
