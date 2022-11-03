@@ -8,4 +8,14 @@ const projectDelete = async (collection, docId) => {
   }
 }
 
-export {projectDelete}
+const projectUpdate = async (collection, docId, data) => {
+  try {
+    await projectFirestore.collection(collection).doc(docId).update(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+export { projectDelete, projectUpdate }
