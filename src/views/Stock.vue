@@ -4,33 +4,42 @@
     v-if="showOverlay"
     @close="showOverlay = !showOverlay"
   />
-  <AddStock v-if="isAdd" @close="isAdd = !isAdd" @finished="handleAddStock"/>
+  <transition
+    enter-from-class="transition opacity-0"
+    enter-to-class="opacity-100 translate-y-0"
+    enter-active-class="duration-150 ease-out"
+    leave-active-class="duration-150 ease-in"
+    leave-from-class="opacity-100"
+    leave-to-class="transform opacity-0"
+  >
+    <AddStock v-if="isAdd" @close="isAdd = !isAdd" @finished="handleAddStock" />
+  </transition>
   <div class="main">
     <div v-if="error" class="error">{{ error }}</div>
     <div class="text-end">
       <button
-      @click="isAdd = !isAdd"
-      type="button"
-      class="
-        text-white
-        bg-green-600
-        hover:bg-green-700
-        focus:ring-4 focus:outline-none focus:ring-blue-300
-        font-medium
-        rounded-lg
-        text-sm
-        px-3
-        py-2
-        text-center
-        inline-flex
-        items-center
-        mb-3
-      "
-    >
-      <span class="material-symbols-outlined"> add </span>
-    </button>
+        @click="isAdd = !isAdd"
+        type="button"
+        class="
+          text-white
+          bg-green-600
+          hover:bg-green-700
+          focus:ring-4 focus:outline-none focus:ring-blue-300
+          font-medium
+          rounded-lg
+          text-sm
+          px-3
+          py-2
+          text-center
+          inline-flex
+          items-center
+          mb-3
+        "
+      >
+        <span class="material-symbols-outlined"> add </span>
+      </button>
     </div>
-    
+
     <EasyDataTable
       buttons-pagination
       :headers="headers"
@@ -56,6 +65,31 @@
       <template #item-factory="{ factory }">
         <FactoryName :path="factory" :objKey="'Name'" />
       </template>
+      <template #item-operation="item">
+        <div class="flex">
+          <router-link :to="{name: 'EditStock', params: item}">
+            <span
+              class="
+                material-symbols-outlined
+                mr-3
+                text-neutral-500
+                cursor-pointer
+                hover:bg-green-400
+                rounded-full
+                p-2
+                transition
+                ease-in-out
+                delay-150
+                hover:-translate-y-1 hover:scale-110
+              "
+            >
+              edit
+            </span>
+          </router-link>
+
+          <DeleteBtn :item="item" @confirm="handleDelete" />
+        </div>
+      </template>
     </EasyDataTable>
   </div>
 
@@ -74,13 +108,18 @@ import { ref } from "@vue/reactivity";
 import Overlay from "../components/Overlay.vue";
 import getStock from "../composibles/getStock";
 import FactoryName from "../components/FkRef.vue";
-import AddStock from "../components/AddStock.vue"
+import AddStock from "../components/AddStock.vue";
+import DeleteBtn from "../components/DeleteButton.vue";
+import { projectDelete } from "../composibles/projectManage";
+import { removeItemArray } from "../composibles/rmInArray.js";
+import { projectStorage } from "@/firebase/config";
 
 export default {
   components: {
     Overlay,
     FactoryName,
-    AddStock
+    AddStock,
+    DeleteBtn,
   },
   setup() {
     // Add Mode
@@ -101,6 +140,7 @@ export default {
       { text: "ลักษณะผ้า", value: "type" },
       { text: "ความยาวผ้า (Y)", value: "length", sortable: true },
       { text: "โรงงาน", value: "factory" },
+      { text: "", value: "operation" },
     ]);
 
     // สร้างฟังก์ชัน showImage เพื่อเก็บค่า Src ของ Img
@@ -111,10 +151,35 @@ export default {
 
     // Handle AddStock
     const handleAddStock = (fabric) => {
-      console.log(fabric)
+      // console.log(fabric);
       stocks.value.push(fabric);
       isAdd.value = !isAdd.value;
-    }
+    };
+
+    //Handle Delete
+    const handleDelete = async (id) => {
+      // console.log(id)
+      try {
+        // ลบข้อมูลใน collection
+        await projectDelete("Stock", id);
+        // // TODO ถ้ามี imgRef
+        // if()
+        const storageRef = projectStorage.ref();
+        const imgRef = storageRef.child(`images/${id}.jpg`);
+        await imgRef.delete();
+        // ลบข้อมูลใน Array
+        stocks.value = removeItemArray(stocks.value, id);
+      } catch (error) {
+        switch (error.code) {
+          case "storage/object-not-found":
+            stocks.value = removeItemArray(stocks.value, id);
+            break;
+          default:
+            console.log(error.code);
+            break;
+        }
+      }
+    };
 
     return {
       headers,
@@ -125,6 +190,7 @@ export default {
       showImage,
       isAdd,
       handleAddStock,
+      handleDelete,
     };
   },
 };

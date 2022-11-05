@@ -6,9 +6,14 @@ module.exports = {
     "./node_modules/flowbite/**/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        dynamic: "clamp(3rem, 1.2143rem + 3.5714vw, 5.5rem)",
+      },
+    },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('@tailwindcss/line-clamp'),
   ],
 }
