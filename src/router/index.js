@@ -7,6 +7,7 @@ import Dashboard from '../views/Dashboard.vue'
 import TestAdd from '../views/TestSendRef.vue'
 import Supplier from '../views/Supplier.vue'
 import Dolls from '../views/Doll.vue'
+import EditStock from '../views/EditStock.vue'
 
 const routes = [
   {
@@ -48,6 +49,12 @@ const routes = [
     path: '/dolls',
     name: 'Dolls',
     component: Dolls
+  },
+  {
+    path: '/stock/edit/:id:factory:color:type:length:imageFabric',
+    name: 'EditStock',
+    component: EditStock,
+    props: true,
   }
 
 ]

@@ -158,6 +158,7 @@
           <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 mb-6 w-full group">
               <input
+                min="0"
                 v-model="lengthFab"
                 type="number"
                 name="length_fabric"
@@ -385,7 +386,7 @@ export default {
           length: lengthFab.value,
           type: typeFab.value,
         };
-        // Up ขึ้น Firebase ใน collection Stock
+        // Up ขึ้น Firebase ใน collection Stock เพื่อเอา Id ของ Doc นั้น
         const fabId = await projectFirestore.collection("Stock").add(fabric);
         // console.log(fabId.id);
 
