@@ -379,7 +379,6 @@
       </div>
     </div>
   </div>
-  <div>{{ stock }}</div>
 </template>
 
 <script>

@@ -312,4 +312,11 @@
   font-weight: bold;
   color: #000;
 }
+.scollHide::-webkit-scrollbar {
+    display: none;
+}
+.scollHide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 </style>

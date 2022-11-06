@@ -1,5 +1,42 @@
 <template>
+  <transition
+    enter-from-class="transition opacity-0"
+    enter-to-class="opacity-100 translate-y-0"
+    enter-active-class="duration-150 ease-out"
+    leave-active-class="duration-150 ease-in"
+    leave-from-class="opacity-100"
+    leave-to-class="transform opacity-0"
+  >
+    <AddSuplier
+      v-if="isAdd"
+      @close="isAdd = !isAdd"
+      @finished="handleAddSuplier"
+    />
+  </transition>
   <div class="main">
+    <div class="text-end">
+      <button
+        @click="isAdd = !isAdd"
+        type="button"
+        class="
+          text-white
+          bg-green-600
+          hover:bg-green-700
+          focus:ring-4 focus:outline-none focus:ring-blue-300
+          font-medium
+          rounded-lg
+          text-sm
+          px-3
+          py-2
+          text-center
+          inline-flex
+          items-center
+          mb-3
+        "
+      >
+        <span class="material-symbols-outlined"> add </span>
+      </button>
+    </div>
     <EasyDataTable
       show-index
       buttons-pagination
@@ -24,13 +61,17 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
-import getSupliers from '../composibles/getSuppliers'
+import { ref } from "@vue/reactivity";
+import getSupliers from "../composibles/getSuppliers";
+import AddSuplier from "../components/AddSuplier.vue";
 
 export default {
+  components: {
+    AddSuplier,
+  },
   setup() {
     //ประกาศและเรียกใช้ getSupliers
-    const {supliers,error,loadSupliers} = getSupliers();
+    const { supliers, error, loadSupliers } = getSupliers();
     loadSupliers();
 
 
@@ -44,6 +85,21 @@ export default {
       { text: "รหัสไปรษณีย์", value: "zipcode" },
       { text: "เบอร์โทรศัพท์", value: "phoneNum" },
     ]);
+
+    // isAdd
+    const isAdd = ref(false);
+
+    // handleAddSuplier
+    const handleAddSuplier = (item) => {
+      // รับค่ามาจาก props
+      // ถ้า img เป็น "" ให้เอาภาพ Default
+      if(item.img === "") {
+        item.img = require('@/assets/User-Profile.png');
+      }
+
+      // push เข้า supliers
+      supliers.value.push(item);
+    }
 
     // const items = ref([]);
 
@@ -83,9 +139,9 @@ export default {
     //   },
     // ]
 
-    return { headers, supliers, error }
-  }
-}
+    return { headers, supliers, error, isAdd, handleAddSuplier };
+  },
+};
 </script>
 
 <style scoped>
