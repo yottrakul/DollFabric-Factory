@@ -36,7 +36,7 @@ const uploadImg = () => {
     // // เก็บใน imageFabric
     // }
     fr.readAsDataURL(seletedFile);
-    console.log(refSelect.value)
+    // console.log(refSelect.value)
   };
 
   return {fr, upload, onFileSelected, seletedFile, refSelect}
