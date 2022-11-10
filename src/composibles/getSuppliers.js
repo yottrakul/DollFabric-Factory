@@ -13,6 +13,10 @@ const getSupliers = () => {
 
       // Map ค่าลงใน supliers.value
       supliers.value = res.docs.map((doc) => {
+        // ถ้าไม่มีรูปให้เรียกรูป Default
+        if(doc.data().img === "") {
+          return { ...doc.data(), id:doc.id, img: require('@/assets/User-Profile.png') }
+        }
         return { ...doc.data(), id:doc.id }
       })
 

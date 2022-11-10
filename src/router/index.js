@@ -51,7 +51,7 @@ const routes = [
     component: Dolls
   },
   {
-    path: '/stock/edit/:id:factory:color:type:length:imageFabric',
+    path: '/stock/edit/:key:id:factory:color:type:length:imageFabric',
     name: 'EditStock',
     component: EditStock,
     props: true,

@@ -15,7 +15,7 @@ const getDollDetails = () => {
         return { ...doc.data(), id: doc.id, Fabric: doc.data().Fabric.id  }
       })
 
-      console.log(dollDetails.value)
+      // console.log(dollDetails.value)
     } catch (err) {
       console.log(err);
       error.value = err;
