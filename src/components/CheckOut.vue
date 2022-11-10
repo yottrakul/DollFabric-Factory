@@ -105,6 +105,7 @@ export default {
     // console.log(stocksRef);
 
     // คำสั่งไว้เช็คของตุ๊กตากับ Stock
+    // สิ่งที่ Return { 'IDผ้า': {isEnougt: true/false, want: 0-infinity} }
     const checkAvailable = (idDoll, amount) => {
       // ค้นหา doll ในก้อน dolls
       let doll = newDollDetails.value.find(item => {
