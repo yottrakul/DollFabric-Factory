@@ -32,10 +32,7 @@
         <div class="zone1 col-span-3 overflow-y-auto scollHide mr-2">
           <!-- กล่องค้นหาและโซนตุ๊กตา -->
           <div class="block pl-5 -mb-2.5 pt-8">
-            <span class="text-6xl font-semibold">ค้นหา</span
-            ><button @click="checkAvailable('DiOhaBeei5F4sa0ZoM6w', 30)">
-              Test
-            </button>
+            <span class="text-6xl font-semibold">ค้นหา</span>
           </div>
           <div
             class="
@@ -51,7 +48,19 @@
             "
           >
             <!-- กล่องค้นหา -->
-            <SearchBox class="col-span-4" />
+            <input
+              v-model="search"
+              class="
+                col-span-4
+                w-full
+                bg-slate-100
+                rounded-full
+                border-2 border-blue-500
+                pt-2
+              "
+              placeholder="ค้นหาตุ๊กตาที่นี่..."
+              type="text"
+            />
             <div
               class="bg-slate-100 rounded-full border-2 border-green-500 flex"
             >
@@ -85,7 +94,7 @@
           >
             <!-- โซนตุ๊กตา -->
 
-            <div v-for="doll in dolls" :key="doll.id">
+            <div v-for="doll in searchByName" :key="doll.id">
               <DollCard
                 :stocksRef="stocksRef"
                 :newDollDetails="newDollDetails"
@@ -167,7 +176,7 @@ import Cart from "../components/Cart.vue";
 import DollCard from "../components/Card.vue";
 import { ref } from "@vue/reactivity";
 import getDolls from "../composibles/getDollDetails";
-import { watchEffect } from '@vue/runtime-core';
+import { computed, watchEffect } from "@vue/runtime-core";
 export default {
   components: {
     SearchBox,
@@ -194,12 +203,11 @@ export default {
     const amount = ref(null);
     // กันลบ
     watchEffect(() => {
-      amount.value = Math.abs(amount.value)
-      if(amount.value === 0) {
-        amount.value = null
-      } 
-    })
-
+      amount.value = Math.abs(amount.value);
+      if (amount.value === 0) {
+        amount.value = null;
+      }
+    });
 
     // Loop Props Doll
     props.dolls.forEach(async (doll) => {
@@ -258,16 +266,42 @@ export default {
     };
 
     // Reload Doll
-    const showDoll = ref(true)
+    const showDoll = ref(true);
     const reloadDoll = () => {
       showDoll.value = false;
       const enableShowDoll = () => {
-        showDoll.value = true
-      }
+        showDoll.value = true;
+      };
       setTimeout(enableShowDoll, 100);
-    }
+    };
 
-    return { closeOverlay, amount, checkAvailable, newDollDetails, stocksRef, showDoll, reloadDoll };
+    // ระบบ Search
+    const search = ref("");
+
+    //computed Search
+    const searchByName = computed(() => {
+      let result = [];
+      if (search.value === "") {
+        result = props.dolls;
+      } else {
+        result = props.dolls.filter((doll) => {
+          return doll.name.includes(search.value);
+        });
+      }
+      return result;
+    });
+
+    return {
+      closeOverlay,
+      amount,
+      checkAvailable,
+      newDollDetails,
+      stocksRef,
+      showDoll,
+      reloadDoll,
+      search,
+      searchByName,
+    };
   },
 };
 </script>
