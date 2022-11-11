@@ -5,7 +5,16 @@
     :idDoll="idDoll"
     :stocks="stocks"
   />
-  <CheckOut :stocks="stocks" :dolls="dolls" v-if="isCO" @close="isCO = false" />
+  <transition
+            enter-from-class="transition opacity-0"
+            enter-to-class="opacity-100"
+            enter-active-class="duration-150 ease-out"
+            leave-active-class="duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="transform opacity-0"
+          >
+  <CheckOut :stocks="stocks" :dolls="dolls" v-if="isCO" @close="handleClose" />
+  </transition>
   <Overlay
     :imgSrc="imgSrc"
     v-if="showOverlay"
@@ -14,13 +23,23 @@
   <div class="main">
     <div v-if="error" class="error">{{ error }}</div>
     <div class="flex justify-end mb-5 gap-3">
-      <button
+      <transition
+            enter-from-class="transition opacity-0 translate-y-96"
+            enter-to-class="opacity-100 translate-x-0"
+            enter-active-class="duration-300 ease-out"
+            leave-active-class="duration-300 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="transform opacity-0 translate-y-96"
+          >
+      <div
+        v-if="dolls.length !== 0"
         @click="isCO = true"
         class="btn-hover color-1 inline-flex justify-center items-center gap-2"
       >
         <span class="material-symbols-outlined"> point_of_sale </span>
         <span>Check Out</span>
-      </button>
+      </div>
+      </transition>
       <button
         type="button"
         class="
@@ -126,6 +145,13 @@ export default {
     const { stocks, loadStock } = getStock();
     loadStock();
 
+    // Handle Close
+    const handleClose = (item) => {
+      isCO.value = false;
+      // แก้บัค stock ไม่อัปเดท
+      stocks.value = item;
+    }
+
     return {
       dolls,
       error,
@@ -137,6 +163,7 @@ export default {
       idDoll,
       stocks,
       isCO,
+      handleClose
     };
   },
 };

@@ -139,11 +139,18 @@ export default {
     // Add tocart เมื่อเจอว่าของขาด จะส่ง notEnought ไป แต่ถ้าครบจะส่ง confirm ไป
     const addToCart = () => {
       if(checkAllHave.value) {
+        const newMap = {
+          id: props.idDoll,
+          name: props.nameDoll,
+          quantity: amountRef.value
+        }
         console.log('confirm')
-        context.emit('confirm')
+        context.emit('confirm', newMap)
       } else {
-        console.log('notEnougt', checkAvailable(idDoll.value, amountRef.value))
-        context.emit('notEnougt', checkAvailable(idDoll.value, amountRef.value))
+        // console.log('notEnougt', checkAvailable(idDoll.value, amountRef.value))
+        context.emit('notEnougt', checkAvailable(idDoll.value, amountRef.value));
+        context.emit('setNameDoll', props.nameDoll);
+        context.emit('setIdDoll', props.idDoll);
       }
     };
 
