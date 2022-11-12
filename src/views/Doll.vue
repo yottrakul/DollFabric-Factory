@@ -13,6 +13,16 @@
             leave-from-class="opacity-100"
             leave-to-class="transform opacity-0"
           >
+  <AddDoll v-if="isAdd" @close="isAdd = false" :stocks="stocks"/>
+  </transition>
+  <transition
+            enter-from-class="transition opacity-0"
+            enter-to-class="opacity-100"
+            enter-active-class="duration-150 ease-out"
+            leave-active-class="duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="transform opacity-0"
+          >
   <CheckOut :stocks="stocks" :dolls="dolls" v-if="isCO" @close="handleClose" />
   </transition>
   <Overlay
@@ -41,6 +51,7 @@
       </div>
       </transition>
       <button
+        @click="isAdd = true"
         type="button"
         class="
           focus:outline-none
@@ -101,14 +112,18 @@ import { ref } from "@vue/reactivity";
 import OverlayDetails from "../components/OverlayDetails.vue";
 import getStock from "@/composibles/getStock";
 import CheckOut from "../components/CheckOut.vue";
+import AddDoll from "../components/AddDoll.vue"
 
 export default {
   components: {
     Overlay,
     OverlayDetails,
     CheckOut,
+    AddDoll
   },
   setup() {
+    // หน้าต่าง Add ตุ๊กตา
+    const isAdd = ref(false);
     // เมื่อมีการ CheckOut
     const isCO = ref(false);
 
@@ -163,7 +178,8 @@ export default {
       idDoll,
       stocks,
       isCO,
-      handleClose
+      handleClose,
+      isAdd
     };
   },
 };

@@ -18,6 +18,33 @@ const projectUpdate = async (collection, docId, data) => {
   }
 }
 
+const projectUpdateInside = async (collection, collection2, docId, docId2, data) => {
+  try {
+    const res = await projectFirestore.collection(collection).doc(docId).collection(collection2).doc(docId2).update(data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const projectAdd = async (collection, data) => {
+  try {
+    const res = await projectFirestore.collection(collection).add(data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const projectAddInside = async (collection, docId, collection2, data) => {
+  try {
+    const res = await projectFirestore.collection(collection).doc(docId).collection(collection2).add(data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
-export { projectDelete, projectUpdate }
+
+export { projectDelete, projectUpdate, projectUpdateInside, projectAdd, projectAddInside }

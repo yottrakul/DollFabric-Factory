@@ -4,9 +4,16 @@
       <p v-if="error">{{ error }}</p>
       <div class="table">
         <h1 class="text-3xl">
-        <NameDollRef :collectionName="'Doll'" :docId="idDoll" :isImg="false" :objKey="'name'"/>
-        <span v-if="fabricInDoll.length !== 0" class="text-lg"> ({{idDoll}})</span>
-      </h1>
+          <NameDollRef
+            :collectionName="'Doll'"
+            :docId="idDoll"
+            :isImg="false"
+            :objKey="'name'"
+          />
+          <span v-if="fabricInDoll.length !== 0" class="text-lg">
+            ({{ idDoll }})</span
+          >
+        </h1>
         <EasyDataTable
           buttons-pagination
           :headers="headers"
@@ -41,11 +48,12 @@ import getDollDetails from "../composibles/getDollDetails";
 import { ref } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
 import FactoryName from "../components/FkRef.vue";
-import NameDollRef from "../components/FkCollRef.vue"
+import NameDollRef from "../components/FkCollRef.vue";
 export default {
   props: ["idDoll", "stocks"],
   components: {
-    FactoryName, NameDollRef
+    FactoryName,
+    NameDollRef,
   },
   setup(props, context) {
     // // New Stocks
@@ -92,6 +100,7 @@ export default {
           })
         );
 
+        // จำนวนผ้าที่ใช้ในตุ๊กตานำไปเปลี่ยนค่า
         result.forEach((fabric) => {
           dollDetails.value.forEach((doll) => {
             if (doll.Fabric === fabric.id) {

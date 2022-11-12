@@ -6,8 +6,10 @@ import 'flowbite';
 
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
+import Notifications from '@kyvg/vue3-notification'
 
 createApp(App)
 .use(router)
+.use(Notifications)
 .component('EasyDataTable', Vue3EasyDataTable)
 .mount('#app')

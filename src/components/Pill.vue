@@ -2,6 +2,7 @@
   <div
     class="
       bg-white
+      shadow-lg
       rounded-full
       w-full
       inline-flex

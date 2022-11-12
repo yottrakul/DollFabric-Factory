@@ -1,4 +1,5 @@
 <template>
+  <notifications position="bottom right" />
   <!-- <img class="block text-center" src="https://miro.medium.com/max/300/1*R4c8lHBHuH5qyqOtZb3h-w.png" alt="firebase">
 <h5>Firebase</h5>
   <nav>

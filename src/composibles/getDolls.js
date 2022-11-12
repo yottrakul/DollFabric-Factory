@@ -17,7 +17,7 @@ const getDolls = () => {
 
       // Map ค่าลงใน supliers.value
       dolls.value = res.docs.map((doc) => {
-        return { ...doc.data(), id:doc.id }
+        return { ...doc.data(), id:doc.id, imgDoll: doc.data().imgDoll === "" ? require('@/assets/doll.png') : doc.data().imgDoll }
       })
 
 
