@@ -413,11 +413,17 @@ export default {
         const name = props.stocks.find((stock) => {
           return stock.id === fabricSelect.value;
         });
+        if(!name) {
+          throw new Error('ไม่สามารถเพิ่มรายการได้: ไม่ได้เลือกผ้าไว้')
+        }
         let fabricData = {
           id: fabricSelect.value,
           quantity: fabricUse.value,
           name: name.color,
         };
+        if(fabricData.quantity <= 0 || fabricData.quantity === null) {
+          throw new Error('กรุณากรอกจำนวนผ้าให้ถูกต้อง!')
+        }
         const isHave = fabricSelected.value.find((fabric) => {
           return fabric.id === fabricData.id;
         });
@@ -436,8 +442,8 @@ export default {
       } catch (error) {
         errorState.value = error.message;
         notify({
-          title: "ข้อผิดพลาด 🫢",
-          text: "กรุณากรอกข้อมูลให้ถูกต้อง",
+          title: "ข้อผิดพลาด ⚠️",
+          text: error.message,
           type: "error",
         });
       }
@@ -487,7 +493,7 @@ export default {
         isLoad.value = false;
       } catch (error) {
         notify({
-          title: "ข้อผิดพลาด",
+          title: "ข้อผิดพลาด⚠️",
           type: "error",
           text: error.message,
         });

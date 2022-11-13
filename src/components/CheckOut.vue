@@ -210,7 +210,7 @@
               pt-5
             "
           >
-            <h1 class="text-4xl font-semibold text-black">Checkout</h1>
+            <h1 class="text-4xl font-semibold text-black">ตะกร้าสินค้า</h1>
           </div>
           <div class="cart-zoner row-span-4 h-full overflow-y-auto scollHide">
             <!-- <Cart @cartDelete="handleDeleteCart" :items="inCart" /> -->
@@ -325,8 +325,10 @@ import getDolls from "../composibles/getDollDetails";
 import { computed, watchEffect } from "@vue/runtime-core";
 import Pill from "../components/Pill.vue";
 import Item from "../components/ItemInCart.vue";
-import { projectUpdate } from "@/composibles/projectManage";
+import { projectAdd, projectUpdate } from "@/composibles/projectManage";
 import { notify } from "@kyvg/vue3-notification";
+import getOrders from "../composibles/getDollOrder"
+import { projectFirestore } from '@/firebase/config';
 export default {
   components: {
     DollCard,
@@ -543,6 +545,8 @@ export default {
 
     // handleTransection
     const isLoad = ref(false);
+    const { dollOrders, loadOrders } = getOrders();
+    loadOrders();
     const handleTransection = async () => {
       try {
         // เปิดโหลด
@@ -551,7 +555,6 @@ export default {
           isLoad.value = false;
           throw new Error('กรุณาเพิ่มตุ๊กตาที่ต้องการ CheckOut');
         }
-        console.log("handleTransection");
         // หา Stock ที่มีการ Update
         const whatToUpdate = stocksRef.value.filter((stock) => {
           const targetStock = saveStock.find((sStock) => {
@@ -572,7 +575,7 @@ export default {
           isLoad.value = false;
           // ปิดหน้าต่าง
           closeOverlay();
-        }, 1000);
+        }, 2000);
         // เปลี่ยนค่าใน saveStock
         // เพื่อให้ในหน้า Doll Update Stock แบบ Realtime
         saveStock = stocksRef.value.map((stock) => {
@@ -580,9 +583,66 @@ export default {
         });
 
         // สร้าง DataBase เก็บตุ๊กตาที่ทำ CheckOut แล้ว
+        // set Doll Id
+        const idDollSet = new Set();
+        inCart.value.forEach((item) => {
+          idDollSet.add(item.id)
+        })
+        const idDolls = Array.from(idDollSet);
+        // นำมารวมเป็นก้อนเดียว
+        let resultCart = [];
+        idDolls.forEach((idDoll) => {
+          let payload = {
+            id: idDoll,
+            quantity: 0
+          };
+          inCart.value.forEach((item) => {
+            if(item.id === idDoll) {
+              payload.quantity += item.quantity;
+            }
+          })
+          resultCart.push(payload)
+        })
+
+
+        //Function Check
+        const checkDollOrder = async () => {
+           resultCart.forEach( async (item) => {
+            const check = dollOrders.value.find((order) => {
+              return order.doll === `Doll/${item.id}`
+            });
+
+            if(!check) {
+              // Local update
+              dollOrders.value.push({
+                doll: `Doll/${item.id}`,
+                quantity: item.quantity
+              })
+              //ถ้าไม่มีใน order ให้สร้าง database ใหม่
+              await projectAdd('Doll_order', {
+                doll: projectFirestore.doc(`Doll/${item.id}`),
+                quantity: item.quantity
+              });
+            } else {
+              
+              // ถ้ามีอยู่แล้ว Firebase Update
+              await projectUpdate('Doll_order', check.id, { quantity: check.quantity + item.quantity })
+              // Local update
+              dollOrders.value.forEach((order) => {
+                if(order.doll === `Doll/${item.id}`) {
+                  order.quantity += item.quantity
+                }
+              })
+            }
+          })
+        }
+
+        await checkDollOrder();
+        
+
       } catch (error) {
         notify({
-          title: "ข้อผิดพลาด!",
+          title: "ข้อผิดพลาด⚠️",
           type: "error",
           text: error.message,
         });
@@ -612,6 +672,7 @@ export default {
       saveStock,
       handleTransection,
       isLoad,
+      dollOrders
     };
   },
 };

@@ -144,7 +144,6 @@ export default {
           name: props.nameDoll,
           quantity: amountRef.value
         }
-        console.log('confirm')
         context.emit('confirm', newMap)
       } else {
         // console.log('notEnougt', checkAvailable(idDoll.value, amountRef.value))

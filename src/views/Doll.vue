@@ -1,10 +1,19 @@
 <template>
+<transition
+            enter-from-class="transition opacity-0"
+            enter-to-class="opacity-100"
+            enter-active-class="duration-150 ease-out"
+            leave-active-class="duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="transform opacity-0"
+          >
   <OverlayDetails
     @close="idDoll = null"
     v-if="idDoll"
     :idDoll="idDoll"
     :stocks="stocks"
   />
+</transition>
   <transition
             enter-from-class="transition opacity-0"
             enter-to-class="opacity-100"
@@ -88,13 +97,20 @@
         </div>
       </template>
       <template #item-operation="item">
-        <div class="operation_wrapper">
+        <div class="flex gap-4 items-center">
           <span
             @click="showDetails(item)"
-            class="material-symbols-outlined operation-icon"
+            class="material-symbols-outlined cursor-pointer hover:bg-orange-300 hover:text-white
+        rounded-full
+        p-2
+        transition
+        ease-in-out
+        delay-150
+        hover:-translate-y-1 hover:scale-110 "
           >
             inventory_2
           </span>
+          <delete-btn :item="item"/>
         </div>
       </template>
     </EasyDataTable>
@@ -113,13 +129,15 @@ import OverlayDetails from "../components/OverlayDetails.vue";
 import getStock from "@/composibles/getStock";
 import CheckOut from "../components/CheckOut.vue";
 import AddDoll from "../components/AddDoll.vue"
+import DeleteBtn from "../components/DeleteButton.vue"
 
 export default {
   components: {
     Overlay,
     OverlayDetails,
     CheckOut,
-    AddDoll
+    AddDoll,
+    DeleteBtn
   },
   setup() {
     // หน้าต่าง Add ตุ๊กตา
@@ -143,10 +161,10 @@ export default {
 
     // Header ตาราง & Item ในตาราง
     const headers = ref([
-      { text: "รูปภาพ", value: "imgDoll" },
-      { text: "ID_Doll", value: "id" },
-      { text: "ชื่อตุ๊กตา", value: "name" },
-      { text: "รายละเอียด", value: "operation" },
+      { text: "รูปภาพ", value: "imgDoll",width: 500 },
+      { text: "ID_Doll", value: "id", width: 200 },
+      { text: "ชื่อตุ๊กตา", value: "name", width: 200 },
+      { text: "รายละเอียด", value: "operation", width: 200 },
     ]);
 
     // ดูรายละเอียด Item

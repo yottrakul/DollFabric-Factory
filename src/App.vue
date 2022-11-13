@@ -1,5 +1,5 @@
 <template>
-  <notifications position="bottom right" />
+  <notifications position="bottom right" max="3"/>
   <!-- <img class="block text-center" src="https://miro.medium.com/max/300/1*R4c8lHBHuH5qyqOtZb3h-w.png" alt="firebase">
 <h5>Firebase</h5>
   <nav>
@@ -319,5 +319,8 @@
 .scollHide {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+.vue-notification-template {
+  font-size: 5rem;
 }
 </style>

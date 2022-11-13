@@ -8,6 +8,7 @@ import TestAdd from '../views/TestSendRef.vue'
 import Supplier from '../views/Supplier.vue'
 import Dolls from '../views/Doll.vue'
 import EditStock from '../views/EditStock.vue'
+import Products from '../views/Products.vue'
 
 const routes = [
   {
@@ -49,6 +50,11 @@ const routes = [
     path: '/dolls',
     name: 'Dolls',
     component: Dolls
+  },
+  {
+    path: '/products',
+    name: 'Products',
+    component: Products
   },
   {
     path: '/stock/edit/:key:id:factory:color:type:length:imageFabric',
