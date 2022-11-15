@@ -141,8 +141,9 @@
       <div
         class="flex flex-col items-center w-full mt-2 border-t border-gray-700"
       >
-        <a
+        <router-link
           class="
+            relative
             flex
             items-center
             w-full
@@ -152,7 +153,7 @@
             rounded
             hover:bg-gray-700 hover:text-gray-300
           "
-          href="#"
+          :to="{name:'Products'}"
         >
           <svg
             class="w-6 h-6 stroke-current"
@@ -169,7 +170,20 @@
             />
           </svg>
           <span class="ml-2 text-sm font-medium">Products</span>
-        </a>
+          <span
+            class="
+              absolute
+              top-0
+              left-0
+              w-2
+              h-2
+              mt-2
+              ml-2
+              bg-indigo-500
+              rounded-full
+            "
+          ></span>
+        </router-link>
         <a
           class="
             flex
@@ -287,6 +301,7 @@
   color: #2c3e50;
   height: 100vh;
   font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .router-link-active,

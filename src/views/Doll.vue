@@ -171,7 +171,7 @@ export default {
     const idDoll = ref(null);
     const showDetails = (doll) => {
       idDoll.value = doll.id;
-      console.log(doll.id);
+      // console.log(doll.id);
     };
 
     //เรียก Stock ทั้งหมด
