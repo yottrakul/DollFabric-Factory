@@ -38,12 +38,13 @@
           <span
             class="
               bg-slate-400
-              text-gray-200
+              text-gray-100
               rounded-lg
               p-1
               material-symbols-outlined
               cursor-context-menu
             "
+            :class="{ 'bg-green-400': (quantitySelect !== 0) }"
           >
             done_outline
           </span>
@@ -85,15 +86,17 @@ export default {
 
     const clickEvent = () => {
       try {
-        if(!(Number.isInteger(parseInt(quantitySelect.value))) || (parseInt(quantitySelect.value) > props.payload.quantity)){
+        if(!(Number.isInteger(parseInt(quantitySelect.value)))){
           quantitySelect.value = 0;
           context.emit('delete', props.payload.idOrder)
-          throw new Error('ค่าที่กรอกไม่ถูกต้อง กรุณากรอกเป็นตัวเลข')
+          throw new Error('ค่าที่กรอกไม่ถูกต้อง กรุณากรอกใหม่')
         }
         quantitySelect.value = parseInt(quantitySelect.value);
-        if(quantitySelect.value === 0) {
+        if(quantitySelect.value <= 0) {
         context.emit('delete', props.payload.idOrder)
-      } else{
+        } else if(quantitySelect.value > props.payload.quantity) {
+          return;
+        } else {
         let payload = {
           idOrder: props.payload.idOrder,
           idDoll: props.payload.idDoll,

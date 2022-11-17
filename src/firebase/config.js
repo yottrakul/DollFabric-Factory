@@ -20,5 +20,8 @@ const projectFirestore = firebase.firestore();
 // เข้าใช้ Storage
 const projectStorage = firebase.storage();
 
+// Timestamp
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+
 // Export
-export {projectFirestore, projectStorage}
+export {projectFirestore, projectStorage, timestamp}
