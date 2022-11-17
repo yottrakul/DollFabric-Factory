@@ -10,6 +10,10 @@ module.exports = {
       fontSize: {
         dynamic: "clamp(3rem, 1.2143rem + 3.5714vw, 5.5rem)",
       },
+      screens: {
+        'fullhd': '1920px',
+        '2k': '2560px',
+      },
     },
   },
   plugins: [
