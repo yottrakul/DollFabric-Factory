@@ -280,7 +280,7 @@ export default {
           return {
             quantity: sup.quantitySelect,
             idDoll: projectFirestore.doc(`Doll/${sup.idDoll}`),
-            idOrder: projectFirestore.doc(`Doll/${sup.idOrder}`),
+            idOrder: projectFirestore.doc(`Doll_order/${sup.idOrder}`),
           };
         });
         // สร้าง Payload ที่จะขึ้น Firestore

@@ -1,5 +1,5 @@
 <template>
-  <notifications position="top right" :max="3" :pauseOnHover="true"/>
+  <notifications position="top right" :max="3" :pauseOnHover="true" />
   <!-- <img class="block text-center" src="https://miro.medium.com/max/300/1*R4c8lHBHuH5qyqOtZb3h-w.png" alt="firebase">
 <h5>Firebase</h5>
   <nav>
@@ -12,7 +12,7 @@
   <div
     class="
       fixed
-      top-0 
+      top-0
       left-0
       bottom-0
       flex flex-col
@@ -153,7 +153,7 @@
             rounded
             hover:bg-gray-700 hover:text-gray-300
           "
-          :to="{name:'Products'}"
+          :to="{ name: 'Products' }"
         >
           <svg
             class="w-6 h-6 stroke-current"
@@ -184,7 +184,7 @@
             "
           ></span>
         </router-link>
-        <a
+        <router-link
           class="
             flex
             items-center
@@ -195,24 +195,11 @@
             rounded
             hover:bg-gray-700 hover:text-gray-300
           "
-          href="#"
+          :to="{ name: 'OrderManage' }"
         >
-          <svg
-            class="w-6 h-6 stroke-current"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-            />
-          </svg>
-          <span class="ml-2 text-sm font-medium">Settings</span>
-        </a>
+          <span class="material-symbols-outlined"> checklist </span>
+          <span class="ml-2 text-sm font-medium">Order Manage</span>
+        </router-link>
         <a
           class="
             relative
@@ -295,7 +282,7 @@
 
 <style>
 #app {
-  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-family: "IBM Plex Sans Thai", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -310,8 +297,8 @@
   color: rgb(209 213 219 / var(--tw-text-opacity));
 }
 
-.router-view{
-  background-color: #F7F7F7;
+.router-view {
+  background-color: #f7f7f7;
   padding-left: 15rem;
   width: 100%;
   height: 100%;
@@ -319,7 +306,7 @@
 }
 
 .head {
-  padding: 1.2em 1em 1.5em ;
+  padding: 1.2em 1em 1.5em;
   display: block;
 }
 
@@ -329,11 +316,11 @@
   color: #000;
 }
 .scollHide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 .scollHide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .vue-notification-template {
   font-size: 5rem;

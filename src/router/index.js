@@ -9,6 +9,7 @@ import Supplier from '../views/Supplier.vue'
 import Dolls from '../views/Doll.vue'
 import EditStock from '../views/EditStock.vue'
 import Products from '../views/Products.vue'
+import OrderManage from '../views/OrderManage.vue'
 
 const routes = [
   {
@@ -61,7 +62,12 @@ const routes = [
     name: 'EditStock',
     component: EditStock,
     props: true,
-  }
+  },
+  {
+    path: '/manage',
+    name: 'OrderManage',
+    component: OrderManage
+  },
 
 ]
 
