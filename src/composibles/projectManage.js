@@ -18,6 +18,15 @@ const projectUpdate = async (collection, docId, data) => {
   }
 }
 
+const projectSet = async (collection, docId, data) => {
+  try {
+    const res = await projectFirestore.collection(collection).doc(docId).set(data,{ merge: true })
+    return res;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const projectUpdateInside = async (collection, collection2, docId, docId2, data) => {
   try {
     const res = await projectFirestore.collection(collection).doc(docId).collection(collection2).doc(docId2).update(data);
@@ -47,4 +56,4 @@ const projectAddInside = async (collection, docId, collection2, data) => {
 
 
 
-export { projectDelete, projectUpdate, projectUpdateInside, projectAdd, projectAddInside }
+export { projectDelete, projectUpdate, projectUpdateInside, projectAdd, projectAddInside, projectSet }
