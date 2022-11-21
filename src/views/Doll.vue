@@ -22,7 +22,7 @@
             leave-from-class="opacity-100"
             leave-to-class="transform opacity-0"
           >
-  <AddDoll v-if="isAdd" @close="isAdd = false" :stocks="stocks"/>
+  <AddDoll v-if="isAdd" @renderDoll="handleAddDoll" @close="isAdd = false" :stocks="stocks"/>
   </transition>
   <transition
             enter-from-class="transition opacity-0"
@@ -110,7 +110,7 @@
           >
             inventory_2
           </span>
-          <delete-btn :item="item"/>
+          <delete-btn @confirm="handleDelete" :item="item"/>
         </div>
       </template>
     </EasyDataTable>
@@ -130,6 +130,7 @@ import getStock from "@/composibles/getStock";
 import CheckOut from "../components/CheckOut.vue";
 import AddDoll from "../components/AddDoll.vue"
 import DeleteBtn from "../components/DeleteButton.vue"
+import { projectDelete } from '@/composibles/projectManage';
 
 export default {
   components: {
@@ -185,6 +186,24 @@ export default {
       stocks.value = item;
     }
 
+    // handleDelete
+    const handleDelete = (id) => {
+      //Firebase
+      projectDelete('Doll', id);
+      //Local
+      const targetDoll = dolls.value.findIndex((doll) => {
+        return doll.id === id
+      })
+      if(targetDoll !== -1) {
+        dolls.value.splice(targetDoll,1);
+      }
+    }
+
+    // handleAddDoll
+    const handleAddDoll = (newDoll) => {
+      dolls.value.push(newDoll);
+    }
+
     return {
       dolls,
       error,
@@ -197,7 +216,9 @@ export default {
       stocks,
       isCO,
       handleClose,
-      isAdd
+      isAdd,
+      handleDelete,
+      handleAddDoll
     };
   },
 };

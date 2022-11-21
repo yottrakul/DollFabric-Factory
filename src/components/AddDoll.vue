@@ -475,11 +475,19 @@ export default {
         };
 
         const res = await projectAdd("Doll", dollPayload);
+        
 
         if (refSelect.value) {
           const url = await upload("dolls", res.id);
           await projectUpdate("Doll", res.id, { imgDoll: url });
+          dollPayload.imgDoll = url;
         }
+
+        // Emit Event
+        if(dollPayload.imgDoll === "") {
+          dollPayload.imgDoll = require('@/assets/doll.png');
+        }
+        context.emit('renderDoll', { ...dollPayload, id: res.id });
 
         fabricSelected.value.forEach((fabric) => {
           let fabricPayload = {
