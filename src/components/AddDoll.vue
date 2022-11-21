@@ -491,6 +491,7 @@ export default {
 
         await updateInside();
         isLoad.value = false;
+        closeOverlay();
       } catch (error) {
         notify({
           title: "ข้อผิดพลาด⚠️",
