@@ -10,63 +10,96 @@ import Dolls from '../views/Doll.vue'
 import EditStock from '../views/EditStock.vue'
 import Products from '../views/Products.vue'
 import OrderManage from '../views/OrderManage.vue'
+import { projectAuth } from '@/firebase/config'
+
+// auth guard
+const requireAuth = (to, from, next) => {
+  let user = projectAuth.currentUser
+  console.log('current user in auth guard: ', user)
+  if(!user) {
+    next({name: 'Home'})
+  } else {
+    next()
+  }
+}
+
+const requireNoAuth = (to, from, next) => {
+  let user = projectAuth.currentUser
+  console.log('current user in auth guard: ', user)
+  if(user) {
+    next({name: 'Dashboard'})
+  } else {
+    next()
+  }
+}
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: requireNoAuth
   },
   {
     path: '/stock',
     name: 'Stock',
-    component: Stock
+    component: Stock,
+    beforeEnter: requireAuth
   },
   {
     path: '/create',
     name: 'Create',
-    component: Create
+    component: Create,
+    beforeEnter: requireAuth
   },
   {
     path: '/invoice',
     name: 'Invoice',
-    component: Invoice
+    component: Invoice,
+    beforeEnter: requireAuth
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    beforeEnter: requireAuth
   },
   {
     path: '/test',
     name: 'Test',
-    component: TestAdd
+    component: TestAdd,
+    beforeEnter: requireAuth
   },
   {
     path: '/supplier',
     name: 'Supplier',
-    component: Supplier
+    component: Supplier,
+    beforeEnter: requireAuth
   },
   {
     path: '/dolls',
     name: 'Dolls',
-    component: Dolls
+    component: Dolls,
+    beforeEnter: requireAuth
   },
   {
     path: '/products',
     name: 'Products',
-    component: Products
+    component: Products,
+    beforeEnter: requireAuth
   },
   {
     path: '/stock/edit/:key:id:factory:color:type:length:imageFabric',
     name: 'EditStock',
     component: EditStock,
     props: true,
+    beforeEnter: requireAuth
   },
   {
     path: '/manage',
     name: 'OrderManage',
-    component: OrderManage
+    component: OrderManage,
+    beforeEnter: requireAuth
   },
 
 ]

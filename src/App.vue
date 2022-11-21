@@ -10,6 +10,9 @@
     <router-link to="/tailwind">Tailwind</router-link>
   </nav> -->
   <div
+    v-motion-slide-left
+    :delay="500"
+    v-if="showNav"
     class="
       fixed
       top-0
@@ -274,11 +277,55 @@
       </svg>
       <span class="ml-2 text-sm font-medium">Account</span>
     </a>
+    <div
+      @click="handleLogout"
+      class="
+        flex
+        items-center
+        justify-center
+        w-full
+        h-16
+        bg-gray-800
+        hover:bg-gray-700 hover:text-gray-300
+        cursor-pointer
+      "
+    >
+      <span class="material-symbols-outlined text-red-500"> logout </span>
+      <span class="ml-2 text-sm font-medium">Logout</span>
+    </div>
   </div>
 
   <!-- บรรจุ routerview -->
-  <div class="router-view"><router-view /></div>
+  <div class="router-view" :class="{ 'pl-0': !showNav }"><router-view /></div>
 </template>
+
+<script>
+import { projectAuth } from "./firebase/config";
+import useLogout from './composibles/useLogout'
+import { useRouter } from 'vue-router';
+import { ref } from '@vue/reactivity';
+export default {
+  setup() {
+    const router = useRouter();
+    const showNav = ref(false)
+    const { logout, error } = useLogout();
+    projectAuth.onAuthStateChanged((user) => {
+      if(user) {
+        showNav.value = true
+      } else {
+        showNav.value = false
+      }
+    })
+
+    const handleLogout = async () => {
+      await logout();
+      router.push({ name: 'Home'});
+    }
+
+    return { handleLogout, showNav };
+  },
+};
+</script>
 
 <style>
 #app {

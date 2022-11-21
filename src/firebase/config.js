@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/storage'
+import 'firebase/compat/auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyDBGBO9W9yQ-_oavMEWo4Y0Ch7U1BoTmjU",
@@ -20,6 +21,9 @@ const projectFirestore = firebase.firestore();
 // เข้าใช้ Storage
 const projectStorage = firebase.storage();
 
+// Auth
+const projectAuth = firebase.auth();
+
 // Timestamp
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
@@ -27,4 +31,4 @@ const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 const projectIncrement =  firebase.firestore.FieldValue.increment
 
 // Export
-export {projectFirestore, projectStorage, timestamp, projectIncrement}
+export {projectFirestore, projectStorage, timestamp, projectIncrement, projectAuth}

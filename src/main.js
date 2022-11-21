@@ -8,6 +8,7 @@ import { MotionPlugin } from '@vueuse/motion'
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import Notifications from '@kyvg/vue3-notification'
+import { projectAuth } from './firebase/config';
 
 // /* import the fontawesome core */
 // import { library } from '@fortawesome/fontawesome-svg-core'
@@ -18,9 +19,17 @@ import Notifications from '@kyvg/vue3-notification'
 // /* add icons to the library */
 // library.add(faClipboardList)
 
-createApp(App)
-.use(router)
-.use(Notifications)
-.use(MotionPlugin)
-.component('EasyDataTable', Vue3EasyDataTable)
-.mount('#app')
+let app;
+
+projectAuth.onAuthStateChanged((_user) => {
+  if(!app) {
+    app = createApp(App)
+    .use(router)
+    .use(Notifications)
+    .use(MotionPlugin)
+    .component('EasyDataTable', Vue3EasyDataTable)
+    .mount('#app');
+  }
+})
+
+

@@ -20,7 +20,7 @@
       <div
         class="
           container
-          w-full
+          w-9/12
           bg-slate-100
           rounded-md
           grid grid-cols-4
