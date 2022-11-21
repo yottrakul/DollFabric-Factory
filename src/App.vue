@@ -43,7 +43,7 @@
         />
       </svg> -->
       <img class="w-8 h-8" src="../src/assets/logo.png" />
-      <span class="ml-2 text-sm font-bold">The App</span>
+      <span class="ml-2 text-sm font-bold">Fabric Stock</span>
     </a>
     <div class="w-full px-2">
       <div
@@ -173,7 +173,7 @@
             />
           </svg>
           <span class="ml-2 text-sm font-medium">Products</span>
-          <span
+          <!-- <span
             class="
               absolute
               top-0
@@ -185,7 +185,7 @@
               bg-indigo-500
               rounded-full
             "
-          ></span>
+          ></span> -->
         </router-link>
         <router-link
           class="
@@ -203,49 +203,6 @@
           <span class="material-symbols-outlined"> checklist </span>
           <span class="ml-2 text-sm font-medium">Order Manage</span>
         </router-link>
-        <a
-          class="
-            relative
-            flex
-            items-center
-            w-full
-            h-12
-            px-3
-            mt-2
-            rounded
-            hover:bg-gray-700 hover:text-gray-300
-          "
-          href="#"
-        >
-          <svg
-            class="w-6 h-6 stroke-current"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-            />
-          </svg>
-          <span class="ml-2 text-sm font-medium">Messages</span>
-          <span
-            class="
-              absolute
-              top-0
-              left-0
-              w-2
-              h-2
-              mt-2
-              ml-2
-              bg-indigo-500
-              rounded-full
-            "
-          ></span>
-        </a>
       </div>
     </div>
     <a

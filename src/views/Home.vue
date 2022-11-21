@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-screen grid place-items-center bg-gray-900">
-    <div class="w-1/2 bg-transparent  min-w-fit">
+    <div class=" bg-transparent max-w-fit">
 
       <div class="flex justify-center mb-16 place-items-center gap-16">
         <img :src="require('@/assets/logo.png')"/>
@@ -66,32 +66,6 @@
             "
             required
           />
-        </div>
-        <div class="flex items-start mb-6">
-          <div class="flex items-center h-5">
-            <input
-              id="remember"
-              type="checkbox"
-              value=""
-              class="
-                w-4
-                h-4
-                bg-gray-50
-                rounded
-                border border-gray-300
-                focus:ring-3 focus:ring-blue-300
-                dark:bg-gray-700
-                dark:border-gray-600
-                dark:focus:ring-blue-600
-                dark:ring-offset-gray-800
-              "
-            />
-          </div>
-          <label
-            for="remember"
-            class="ml-2 text-sm font-medium text-gray-400 dark:text-gray-300"
-            >Remember me</label
-          >
         </div>
         <div class="flex justify-end">
           <button

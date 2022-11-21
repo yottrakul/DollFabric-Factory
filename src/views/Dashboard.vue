@@ -1,64 +1,98 @@
 <template>
   <header>
-    <h1 class="head">Good Morning, User !</h1>
+    <h1 class="head">Dashboard</h1>
   </header>
   <main>
     <div class="flex flex-wrap">
       <div class="menu-box btn btn-1">
         <div class="box-head flex items-end justify-between m-9">
           <h2>Dashboard</h2>
-          <span class="material-symbols-outlined text-7xl dashboard-icon"> dashboard </span>
+          <span class="material-symbols-outlined text-7xl dashboard-icon">
+            dashboard
+          </span>
         </div>
         <p class="detail">See what’s happening At your company!</p>
-        <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
+        <span class="material-symbols-outlined text-5xl next-icon">
+          arrow_right_alt
+        </span>
       </div>
-      <div class="menu-box btn btn-2">
+      <router-link :to="{ name: 'Stock' }">
+      <div class="menu-box btn btn-2 pt-0.5">
         <div class="box-head flex items-end justify-between m-9">
           <h2>Fabric Stock</h2>
-          <span class="material-symbols-outlined text-7xl storage-icon"> storage </span>
+          <span class="material-symbols-outlined text-7xl storage-icon">
+            storage
+          </span>
         </div>
-        <p class="detail">Manage dataset, view dataset Report across workspace.</p>
-        <router-link :to="{ name: 'Stock' }">
-          <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
-        </router-link>
+        <p class="detail">
+          จัดการชุดข้อมูล, ดูชุดข้อมูลและรายงานข้อมูล
+        </p>
+        
+          <span class="material-symbols-outlined text-5xl next-icon">
+            arrow_right_alt
+          </span>
       </div>
-      <div class="menu-box btn btn-3">
+      </router-link>
+      <router-link :to="{ name: 'Supplier' }">
+      <div class="menu-box btn btn-3 pt-0.5">
         <div class="box-head flex items-end justify-between m-9">
           <h2>Supplier</h2>
-          <span class="material-symbols-outlined text-7xl group-icon"> group </span>
+          <span class="material-symbols-outlined text-7xl group-icon">
+            group
+          </span>
         </div>
-        <p class="detail">Manage supplier, view supplier across workspace</p>
-        <router-link :to="{ name: 'Supplier' }">
-          <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
-        </router-link>
+        <p class="detail">จัดการคู่ค้า, ดูรายชื่อคู่ค้า, แก้ไขและเพิ่มข้อมูลคู่ค้า</p>
+        
+          <span class="material-symbols-outlined text-5xl next-icon">
+            arrow_right_alt
+          </span>
+        
       </div>
-      <div class="menu-box btn btn-4">
-        <div class="box-head flex items-end justify-between m-9">
-          <h2>Calculator</h2>
-          <span class="material-symbols-outlined text-7xl function-icon"> function </span>
+      </router-link>
+      <router-link  :to="{ name: 'Products' }">
+        <div  class="menu-box btn btn-4 pt-0.5">
+          <div class="box-head flex items-end justify-between m-9">
+            <h2>Products</h2>
+            <span class="material-symbols-outlined text-7xl function-icon">
+              precision_manufacturing
+            </span>
+          </div>
+          <p class="detail">ตุ๊กตาที่ถูก Checkout แล้วจะแสดงในหน้าส่วน Products</p>
+          <span class="material-symbols-outlined text-5xl next-icon">
+            arrow_right_alt
+          </span>
         </div>
-        <p class="detail">See what’s happening At your company!</p>
-        <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
-      </div>
-      <div class="menu-box btn btn-5">
+      </router-link>
+      <router-link  :to="{ name: 'Dolls' }">
+      <div class="menu-box btn btn-5 pt-0.5">
         <div class="box-head flex items-end justify-between m-9">
           <h2>Doll Pattern</h2>
-          <span class="material-symbols-outlined text-7xl android-icon"> android </span>
+          <span class="material-symbols-outlined text-7xl android-icon">
+            android
+          </span>
         </div>
-        <p class="detail">See what’s happening At your company!</p>
-        <router-link :to="{ name: 'Dolls' }" >
-        <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
-
+        <p class="detail">ออกแบบโครงสร้างของตุ๊กตาและแก้ไขโครงสร้าง</p>
+        <router-link :to="{ name: 'Dolls' }">
+          <span class="material-symbols-outlined text-5xl next-icon">
+            arrow_right_alt
+          </span>
         </router-link>
       </div>
-      <div class="menu-box btn btn-6">
+      </router-link>
+      <router-link  :to="{ name: 'OrderManage' }">
+      <div class="menu-box btn btn-6 pt-0.5">
         <div class="box-head flex items-end justify-between m-9">
-          <h2>Delivery</h2>
-          <span class="material-symbols-outlined text-7xl delivery-icon"> local_shipping </span>
+          <h2 class="whitespace-nowrap">Orders</h2>
+          <span class="material-symbols-outlined text-7xl delivery-icon">
+            receipt_long
+          </span>
         </div>
-        <p class="detail">See what’s happening At your company!</p>
-        <span class="material-symbols-outlined text-5xl next-icon"> arrow_right_alt </span>
+        <p class="detail">Order ที่ถูกสร้างขึ้นสามารถจัดการในหน้านี้</p>
+        <span class="material-symbols-outlined text-5xl next-icon">
+          arrow_right_alt
+        </span>
       </div>
+      </router-link>
     </div>
   </main>
 </template>
@@ -71,27 +105,27 @@ export default {};
 /* ข้างใน box */
 
 .dashboard-icon {
-  color:#1d6d62
+  color: #1d6d62;
 }
 
 .storage-icon {
-  color: #b08928
+  color: #b08928;
 }
 
 .group-icon {
-  color: #B65456
+  color: #b65456;
 }
 
 .function-icon {
-  color: #622A95
+  color: #622a95;
 }
 
 .android-icon {
-  color: rgb(92, 139, 205)
+  color: rgb(92, 139, 205);
 }
 
 .delivery-icon {
-  color: #9c753e
+  color: #9c753e;
 }
 
 .next-icon {
@@ -104,7 +138,6 @@ export default {};
   color: rgb(85, 85, 85);
   transition: 0.5s;
 }
-
 
 .detail {
   width: 50%;
@@ -133,7 +166,7 @@ main > div {
   width: 20rem;
   height: 20rem;
   border-radius: 10px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .btn {
@@ -175,12 +208,16 @@ main > div {
 }
 
 .btn-5 {
-  --c1: rgb(58,97,154);
-  --c2: rgba(58,97,154,0.5);
+  --c1: rgb(58, 97, 154);
+  --c2: rgba(58, 97, 154, 0.5);
 }
 
 .btn-6 {
   --c1: #e9ae5b;
   --c2: #f6d36596;
+}
+
+::selection {
+  outline: none;
 }
 </style>
