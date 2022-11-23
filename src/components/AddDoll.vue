@@ -376,7 +376,6 @@ import { ref } from "@vue/reactivity";
 import imgDoll from "../composibles/uploadImg";
 import Item from "../components/Pill.vue";
 import { notify } from "@kyvg/vue3-notification";
-import uploadImg from "../composibles/uploadImg";
 import {
   projectAdd,
   projectAddInside,
@@ -414,7 +413,7 @@ export default {
           return stock.id === fabricSelect.value;
         });
         if(!name) {
-          throw new Error('ไม่สามารถเพิ่มรายการได้: ไม่ได้เลือกผ้าไว้')
+          throw new Error('ไม่สามารถเพิ่มรายการได้: ไม่ได้เลือกผ้าไว้นะ')
         }
         let fabricData = {
           id: fabricSelect.value,
