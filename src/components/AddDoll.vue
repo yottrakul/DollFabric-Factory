@@ -413,7 +413,7 @@ export default {
           return stock.id === fabricSelect.value;
         });
         if(!name) {
-          throw new Error('ไม่สามารถเพิ่มรายการได้: ไม่ได้เลือกผ้าไว้นะ')
+          throw new Error('ไม่สามารถเพิ่มรายการได้: ไม่ได้เลือกผ้าไว้นะครับ');
         }
         let fabricData = {
           id: fabricSelect.value,
