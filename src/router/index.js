@@ -109,4 +109,10 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to, form, next) => {
+  console.log(to);
+  document.title = `FabricStock🧸 | ${to.name}`
+  next();
+})
+
 export default router
