@@ -11,6 +11,7 @@ import EditStock from '../views/EditStock.vue'
 import Products from '../views/Products.vue'
 import OrderManage from '../views/OrderManage.vue'
 import { projectAuth } from '@/firebase/config'
+import PathNotFound from '../views/PathNotFound.vue'
 
 // auth guard
 const requireAuth = (to, from, next) => {
@@ -101,6 +102,11 @@ const routes = [
     component: OrderManage,
     beforeEnter: requireAuth
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'PathNotFound',
+    component: PathNotFound
+  }
 
 ]
 
