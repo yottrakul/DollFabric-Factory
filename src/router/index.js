@@ -16,7 +16,6 @@ import PathNotFound from '../views/PathNotFound.vue'
 // auth guard
 const requireAuth = (to, from, next) => {
   let user = projectAuth.currentUser
-  console.log('current user in auth guard: ', user)
   if(!user) {
     next({name: 'Home'})
   } else {
@@ -26,7 +25,6 @@ const requireAuth = (to, from, next) => {
 
 const requireNoAuth = (to, from, next) => {
   let user = projectAuth.currentUser
-  console.log('current user in auth guard: ', user)
   if(user) {
     next({name: 'Dashboard'})
   } else {
@@ -116,7 +114,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, form, next) => {
-  console.log(to);
   document.title = `FabricStock🧸 | ${to.name}`
   next();
 })

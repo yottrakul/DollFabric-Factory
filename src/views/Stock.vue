@@ -45,6 +45,7 @@
       :headers="headers"
       :items="stocks"
       :loading="stocks.length === 0"
+      :filter-options="filterOptions"
     >
       <template #loading>
         <img
@@ -52,6 +53,56 @@
           style="width: 80px; height: 50px"
         />
       </template>
+      <!-- headerzone -->
+      <template #header-color="header">
+        <div class="filter-column relative flex place-items-center gap-2">
+        <span @click.stop="showColorFilter = !showColorFilter" class="material-symbols-outlined cursor-default hover:text-gray-300">search</span>
+        {{ header.text }}
+        <div class="flex gap-4 place-items-center filter-menu absolute top-10 -left-40 px-4 py-2 bg-white border-2 shadow-xl rounded-lg" v-if="showColorFilter">
+          <span class="material-symbols-outlined text-4xl">search</span><input class="border-2 font-normal p-2 text-2xl" placeholder="กรอกสีผ้าที่ต้องการ..." v-model="colorCriteria"/>
+          <span @click.stop="resetShow" class="material-symbols-outlined text-red-600 transition-all hover:scale-150 hover:-translate-y-1 cursor-pointer">close</span>
+        </div>
+      </div>
+      </template>
+      <template #header-type="header">
+        <div class="filter-column relative flex place-items-center gap-2">
+        <span @click.stop="showTypeFilter = !showTypeFilter" class="material-symbols-outlined cursor-default hover:text-gray-300">filter_list</span>
+        {{ header.text }}
+        <div class="flex gap-4 place-items-center filter-menu absolute top-10 -left-40 px-4 py-2 bg-white border-2 shadow-xl rounded-lg" v-if="showTypeFilter">
+          <span class="material-symbols-outlined text-4xl">gradient</span><select class="border-2 font-normal p-2 text-2xl w-56" v-model="typeCriteria">
+            <option value="all">ทั้งหมด</option>
+            <option v-for="type in typeList" :key="type" :value="type">{{type}}</option>
+          </select>
+          <span @click.stop="resetShow" class="material-symbols-outlined text-red-600 transition-all hover:scale-150 hover:-translate-y-1 cursor-pointer">close</span>
+        </div>
+      </div>
+      </template>
+      <template #header-length="header">
+        <div class="filter-column relative flex place-items-center gap-2">
+        <span @click.stop="showLengthFilter = !showLengthFilter" class="material-symbols-outlined cursor-default hover:text-gray-300">filter_list</span>
+        {{ header.text }}
+        <div class="w-[40rem] flex gap-4 place-items-center filter-menu absolute top-14 -right-20 px-4 py-2 bg-white border-2 shadow-xl rounded-lg" v-if="showLengthFilter">
+          <span class="material-symbols-outlined text-4xl">straighten</span><Silder class="flex-1" :max="maxSlider" v-model="lengthCriteria"/><span>(หลา)</span>
+          <span @click.stop="resetShow" class="material-symbols-outlined text-red-600 transition-all hover:scale-150 hover:-translate-y-1">close</span>
+        </div>
+      </div>
+      </template>
+      <template #header-factory="header">
+        <div class="filter-column relative flex place-items-center gap-2">
+        <span @click.stop="showFactoryFilter = !showFactoryFilter" class="material-symbols-outlined cursor-default hover:text-gray-300">filter_list</span>
+        {{ header.text }}
+        <div class="flex gap-4 place-items-center filter-menu absolute top-10 -left-40 px-4 py-2 bg-white border-2 shadow-xl rounded-lg" v-if="showFactoryFilter">
+          <span class="material-symbols-outlined text-4xl">factory</span><select class="border-2 font-normal p-2 text-2xl w-56" v-model="factoryCriteria">
+            <option value="all">ทั้งหมด</option>
+            <option v-for="factory in factoryList" :key="factory" :value="factory">
+              <FactoryName :path="factory" :objKey="'Name'" />
+            </option>
+          </select>
+          <span @click.stop="resetShow" class="material-symbols-outlined text-red-600 transition-all hover:scale-150 hover:-translate-y-1 cursor-pointer">close</span>
+        </div>
+      </div>
+      </template>
+      <!-- headerzone -->
       <template #item-imageFabric="{ imageFabric }">
         <div class="fabric_wrapper">
           <img
@@ -91,6 +142,7 @@
         </div>
       </template>
     </EasyDataTable>
+    
   </div>
 
   <!-- DebugZone -->
@@ -113,6 +165,9 @@ import DeleteBtn from "../components/DeleteButton.vue";
 import { projectDelete } from "../composibles/projectManage";
 import { removeItemArray } from "../composibles/rmInArray.js";
 import { projectStorage } from "@/firebase/config";
+import { computed, watchEffect } from '@vue/runtime-core';
+import Silder from "@vueform/slider"
+import "@vueform/slider/themes/default.css";
 
 export default {
   components: {
@@ -120,8 +175,18 @@ export default {
     FactoryName,
     AddStock,
     DeleteBtn,
+    Silder
   },
   setup() {
+    const showColorFilter = ref(false);
+    const colorCriteria = ref("");
+    const typeCriteria = ref("all");
+    const showTypeFilter = ref(false);
+    const lengthCriteria = ref([0,999999999]);
+    const showLengthFilter = ref(false);
+    const factoryCriteria = ref("all");
+    const showFactoryFilter = ref(false);
+
     // Add Mode
     const isAdd = ref(false);
 
@@ -132,6 +197,7 @@ export default {
     // เรียกใช้ getStock
     const { stocks, error, loadStock } = getStock();
     loadStock();
+
 
     const headers = ref([
       { text: "รูปภาพ", value: "imageFabric" },
@@ -181,6 +247,85 @@ export default {
       }
     };
 
+    // Query Data
+    const typeList = computed(() => {
+      let typeListArray = [];
+      let typeSet = new Set();
+      if(stocks.value.length !== 0) {
+        stocks.value.forEach(stock => {
+          typeSet.add(stock.type);
+        })
+        typeListArray = Array.from(typeSet);
+      }
+      return typeListArray;
+    })
+    const factoryList = computed(() => {
+      let factoryListArray = [];
+      let factorySet = new Set();
+      if(stocks.value.length !== 0) {
+        stocks.value.forEach(stock => {
+          factorySet.add(stock.factory);
+        })
+        factoryListArray = Array.from(factorySet);
+      }
+      return factoryListArray;
+    })
+    const maxSlider = computed(() => {
+      let maxNum = 500;
+      let minNum = 0;
+      let numberArray = [];
+      if(stocks.value.length !== 0) {
+        stocks.value.forEach(stock => {
+          numberArray.push(stock.length);
+        })
+        maxNum = Math.max(...numberArray);
+        minNum = Math.min(...numberArray);
+      }
+      lengthCriteria.value = [minNum,maxNum];
+      
+      return maxNum
+    })
+
+    const filterOptions = computed(() => {
+      const filterOptionsArray = [];
+      if (typeCriteria.value !== 'all') {
+        filterOptionsArray.push({
+          field: 'type',
+          comparison: '=',
+          criteria: typeCriteria.value,
+        });
+      }
+      if (factoryCriteria.value !== 'all') {
+        filterOptionsArray.push({
+          field: 'factory',
+          comparison: '=',
+          criteria: factoryCriteria.value,
+        });
+      }
+      if(stocks.value.length !== 0) {
+        filterOptionsArray.push({
+        field: 'length',
+        comparison: 'between',
+        criteria: lengthCriteria.value,
+      });
+      }
+      filterOptionsArray.push({
+        field: 'color',
+        criteria: colorCriteria.value,
+        comparison: (value, criteria) => (value != null && criteria != null &&
+          typeof value === 'string' && value.includes(`${criteria}`)),
+      });
+
+      
+      return filterOptionsArray;
+    })
+
+    const resetShow = () => {
+      showColorFilter.value = false;
+      showTypeFilter.value = false;
+      showLengthFilter.value = false;
+      showFactoryFilter.value = false;
+    }
     return {
       headers,
       stocks,
@@ -191,6 +336,19 @@ export default {
       isAdd,
       handleAddStock,
       handleDelete,
+      colorCriteria,
+      showColorFilter,
+      typeCriteria,
+      showTypeFilter,
+      typeList,
+      lengthCriteria,
+      showLengthFilter,
+      factoryList,
+      showFactoryFilter,
+      factoryCriteria,
+      filterOptions,
+      maxSlider,
+      resetShow,
     };
   },
 };
