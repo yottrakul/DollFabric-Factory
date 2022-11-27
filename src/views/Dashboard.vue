@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1 class="head">Dashboard</h1>
+    <h1 class="head">Dashboard <span v-motion-fade v-if="userRole" class="uppercase">{{userRole[0].role}}</span></h1>
   </header>
   <main>
     <div class="flex flex-wrap">
@@ -98,7 +98,18 @@
 </template>
 
 <script>
-export default {};
+import { ref } from '@vue/reactivity';
+import getRole from '../composibles/getRole'
+import { projectAuth } from '@/firebase/config';
+export default {
+  setup() {
+    const roleName = ref("");
+    const { userRole, loadUser } = getRole();
+    loadUser(projectAuth.currentUser.uid);
+
+    return { roleName, userRole }
+  }
+};
 </script>
 
 <style scoped>

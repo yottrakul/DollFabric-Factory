@@ -60,6 +60,7 @@
       </div>
       </transition>
       <button
+        v-if="roleAccess.owner"
         @click="isAdd = true"
         type="button"
         class="
@@ -110,7 +111,7 @@
           >
             inventory_2
           </span>
-          <delete-btn @confirm="handleDelete" :item="item"/>
+          <delete-btn v-if="roleAccess.owner" @confirm="handleDelete" :item="item"/>
         </div>
       </template>
     </EasyDataTable>
@@ -131,6 +132,7 @@ import CheckOut from "../components/CheckOut.vue";
 import AddDoll from "../components/AddDoll.vue"
 import DeleteBtn from "../components/DeleteButton.vue"
 import { projectDelete } from '@/composibles/projectManage';
+import getRole from '../composibles/getRole';
 
 export default {
   components: {
@@ -159,6 +161,10 @@ export default {
     //ประกาศและเรียกใช้ getDolls
     const { dolls, error, loadDolls } = getDolls();
     loadDolls();
+
+    // เช็ค DAC
+    const { getUserRole, roleAccess } = getRole();
+    getUserRole();
 
     // Header ตาราง & Item ในตาราง
     const headers = ref([
@@ -218,7 +224,8 @@ export default {
       handleClose,
       isAdd,
       handleDelete,
-      handleAddDoll
+      handleAddDoll,
+      roleAccess
     };
   },
 };

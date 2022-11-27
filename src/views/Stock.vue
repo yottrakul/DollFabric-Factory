@@ -18,6 +18,7 @@
     <div v-if="error" class="error">{{ error }}</div>
     <div class="text-end">
       <button
+        v-if="roleAccess.owner"
         @click="isAdd = !isAdd"
         type="button"
         class="
@@ -116,7 +117,7 @@
       <template #item-factory="{ factory }">
         <FactoryName :path="factory" :objKey="'Name'" />
       </template>
-      <template #item-operation="item">
+      <template v-if="roleAccess.owner" #item-operation="item">
         <div class="flex">
           <router-link :to="{name: 'EditStock', params: item}">
             <span
@@ -156,7 +157,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import Overlay from "../components/Overlay.vue";
 import getStock from "../composibles/getStock";
 import FactoryName from "../components/FkRef.vue";
@@ -164,10 +165,11 @@ import AddStock from "../components/AddStock.vue";
 import DeleteBtn from "../components/DeleteButton.vue";
 import { projectDelete } from "../composibles/projectManage";
 import { removeItemArray } from "../composibles/rmInArray.js";
-import { projectStorage } from "@/firebase/config";
+import { projectAuth, projectStorage } from "@/firebase/config";
 import { computed, watchEffect } from '@vue/runtime-core';
 import Silder from "@vueform/slider"
 import "@vueform/slider/themes/default.css";
+import getRole from '../composibles/getRole';
 
 export default {
   components: {
@@ -197,6 +199,11 @@ export default {
     // เรียกใช้ getStock
     const { stocks, error, loadStock } = getStock();
     loadStock();
+
+    // เช็ค DAC
+    const { getUserRole, roleAccess } = getRole();
+    getUserRole();
+
 
 
     const headers = ref([
@@ -349,6 +356,7 @@ export default {
       filterOptions,
       maxSlider,
       resetShow,
+      roleAccess,
     };
   },
 };

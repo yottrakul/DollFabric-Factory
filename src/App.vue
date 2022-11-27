@@ -205,7 +205,7 @@
         </router-link>
       </div>
     </div>
-    <a
+    <!-- <a
       class="
         flex
         items-center
@@ -233,7 +233,7 @@
         />
       </svg>
       <span class="ml-2 text-sm font-medium">Account</span>
-    </a>
+    </a> -->
     <div
       @click="handleLogout"
       class="
@@ -242,6 +242,7 @@
         justify-center
         w-full
         h-16
+        mt-auto
         bg-gray-800
         hover:bg-gray-700 hover:text-gray-300
         cursor-pointer
@@ -262,13 +263,13 @@ import useLogout from './composibles/useLogout'
 import { useRouter } from 'vue-router';
 import { ref } from '@vue/reactivity';
 export default {
-  setup() {
+   setup() {
     const router = useRouter();
     const showNav = ref(false)
     const { logout, error } = useLogout();
     projectAuth.onAuthStateChanged((user) => {
       if(user) {
-        showNav.value = true
+        showNav.value = true;
       } else {
         showNav.value = false
       }
