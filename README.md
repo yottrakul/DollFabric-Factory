@@ -13,6 +13,9 @@ Web Application สำหรับจัดการคลังสินค้�
 - หน้าจัดการส่งตุ๊กตาให้กับ Supplier
 - หน้าสรุป Order ของ Supplier
 
+## Demo Account
+- Owner Em@il : owner@fabricstock.co.th | Password : 123456789z
+- Staff Em@il : staff@fabricstock.co.th | Password : 123456789z
 
 ## Project setup
 ```
